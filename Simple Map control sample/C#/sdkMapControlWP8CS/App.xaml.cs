@@ -29,6 +29,11 @@ namespace sdkMapControlWP8CS
      "https://hearme.azure-mobile.net/",
     "WjdXlZnvZytJLjoOkMnDseLbFznskG19"
  );
+
+        public static MobileServiceClient MobileServiceFacebook = new MobileServiceClient(
+     "https://hearmeauth.azure-mobile.net/",
+    "WTrjAqtMCjViAVIvhmGkQulEeRIqWkn56"
+ );
         private static SoundModel viewModel = null;
 
         public static SoundModel ViewModel

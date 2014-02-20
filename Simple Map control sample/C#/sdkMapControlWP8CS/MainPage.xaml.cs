@@ -1,4 +1,4 @@
-/* 
+﻿/* 
     Copyright (c) 2012 Microsoft Corporation.  All rights reserved.
     Use of this sample source code is subject to the terms of the Microsoft license 
     agreement under which you licensed this sample source code and is provided AS-IS.
@@ -74,13 +74,23 @@ namespace sdkMapControlWP8CS
                     var layer = new MapLayer();
                     foreach (var lugar in lugares)
                     {
-                        var p = new Pushpin();
-                        var overlay = new MapOverlay();
+                        Image image = new Image();
+                        //ruta de la imagen
+                        image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin", UriKind.Relative));
 
-                        overlay.PositionOrigin = new Point(0, 1);
-                        overlay.GeoCoordinate = new GeoCoordinate(lugar.Latitude, lugar.Longitude);
-                        p.Content = "Pushpin";
-                        overlay.Content = p;
+                        //Propiedades de la imagen
+                        image.Opacity = 0.8;
+                        image.Stretch = System.Windows.Media.Stretch.None;
+
+                        //agregar el click
+                        image.Tap += new MouseButtonEventHandler(Image_Clicker);
+
+
+                        // Create a MapOverlay and add marker.
+                        MapOverlay overlay = new MapOverlay();
+                        overlay.Content = image;
+                        overlay.GeoCoordinate = new GeoCoordinate(coordinate.Latitude, coordinate.Longitude);
+                        overlay.PositionOrigin = new Point(0.5, 1.0);
                         layer.Add(overlay);
                     }
                     sampleMap.Layers.Add(layer);
@@ -298,6 +308,23 @@ namespace sdkMapControlWP8CS
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/SoundBoard.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void abrirMenu(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (men__principal.Visibility != Visibility.Visible)
+                men__principal.Visibility = Visibility.Visible;
+            else men__principal.Visibility = Visibility.Collapsed;// TODO: Add event handler implementation here.
+        }
+
+        private void goToGrabar(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+        	NavigationService.Navigate(new Uri("/Record.xaml", UriKind.RelativeOrAbsolute));
+        }
+
+        private void goToEscuchar(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+        	NavigationService.Navigate(new Uri("/SoundBoard.xaml", UriKind.RelativeOrAbsolute));
         }
 
         
