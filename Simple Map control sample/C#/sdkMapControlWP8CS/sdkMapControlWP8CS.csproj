@@ -221,6 +221,8 @@
     <Content Include="Assets\logo159x159.png" />
     <Content Include="Assets\logo336x336.png" />
     <Content Include="Assets\logo691x336.png" />
+    <Content Include="Assets\pin.png" />
+    <Content Include="Assets\pinOpen.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

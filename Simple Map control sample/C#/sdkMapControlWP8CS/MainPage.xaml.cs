@@ -38,7 +38,6 @@ namespace sdkMapControlWP8CS
         private IMobileServiceTable<Location> LocationTable = App.MobileService.GetTable<Location>();
 
         private Location location = new Location();
-
         public static double myLatitude;
         public static double myLongitude;
         const int MIN_ZOOM_LEVEL = 1;
@@ -76,26 +75,33 @@ namespace sdkMapControlWP8CS
                     {
                         Image image = new Image();
                         //ruta de la imagen
-                        image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin", UriKind.Relative));
+                        image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin.png", UriKind.RelativeOrAbsolute));
 
                         //Propiedades de la imagen
                         image.Opacity = 0.8;
                         image.Stretch = System.Windows.Media.Stretch.None;
-
                         //agregar el click
-                        image.Tap += new MouseButtonEventHandler(Image_Clicker);
-
+                        image.Tap += cambiarImagen;
+                        
 
                         // Create a MapOverlay and add marker.
                         MapOverlay overlay = new MapOverlay();
                         overlay.Content = image;
-                        overlay.GeoCoordinate = new GeoCoordinate(coordinate.Latitude, coordinate.Longitude);
+                        overlay.GeoCoordinate = new GeoCoordinate(lugar.Latitude,lugar.Longitude);
                         overlay.PositionOrigin = new Point(0.5, 1.0);
                         layer.Add(overlay);
                     }
                     sampleMap.Layers.Add(layer);
 
                 };
+        }
+
+        private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            Image imagen = (Image)sender;
+
+                imagen.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pinOpen.png", UriKind.RelativeOrAbsolute));
+
         }
 
 
