@@ -74,6 +74,7 @@ namespace sdkMapControlWP8CS
             this.Loaded += async (sender, args) =>
                 {
                     var lugares = await LocationTable.ReadAsync();
+                    App.ViewModel.CustomSounds.Items.Clear();
                     var layer = new MapLayer();
                     foreach (var lugar in lugares)
                     {
@@ -381,8 +382,9 @@ namespace sdkMapControlWP8CS
             soundData.ContainerName = location.ContainerName;
             soundData.SasQueryString = location.SasQueryString;
             soundData.ImageUri = location.ImageUri;
+            soundData.Id = location.Id;
 
-
+            if (App.ViewModel.CustomSounds.Items.Exists(e => e.Equals(soundData)) == false)
             App.ViewModel.CustomSounds.Items.Add(soundData);
 
         }

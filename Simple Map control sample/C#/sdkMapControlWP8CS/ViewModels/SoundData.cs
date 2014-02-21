@@ -10,7 +10,8 @@ namespace sdkMapControlWP8CS.ViewModels
 {
     public class SoundData
     {
-
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
         [JsonProperty(PropertyName = "filepath")]
