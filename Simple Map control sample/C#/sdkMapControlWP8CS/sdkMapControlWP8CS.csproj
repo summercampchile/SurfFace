@@ -114,6 +114,7 @@
     <Compile Include="SoundBoard.xaml.cs">
       <DependentUpon>SoundBoard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\Globo.cs" />
     <Compile Include="ViewModels\SoundData.cs" />
     <Compile Include="ViewModels\SoundGroup.cs" />
     <Compile Include="ViewModels\SoundModel.cs" />
@@ -215,6 +216,7 @@
     <Content Include="Assets\Audio\Warnings\Police - US.wav" />
     <Content Include="Assets\Audio\Warnings\Vuvuzela.wav" />
     <Content Include="Assets\691x336.png" />
+    <Content Include="Assets\globoFondo.png" />
     <Content Include="Assets\hearme159x159.png" />
     <Content Include="Assets\hearme336x336.png" />
     <Content Include="Assets\Logo100x100.png" />
@@ -305,6 +307,9 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NokiaMapSDK">
+      <HintPath>..\packages\NokiaMapSDK.1.0\lib\sl4-wp71\NokiaMapSDK.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\packages\Microsoft.Net.Http.2.2.18\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>

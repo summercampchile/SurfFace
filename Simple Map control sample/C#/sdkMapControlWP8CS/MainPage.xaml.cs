@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using sdkMapControlWP8CS.Resources;
+using sdkMapControlWP8CS.ViewModels;
 using Microsoft.Phone.Maps;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Phone.Maps.Controls;
@@ -40,6 +41,7 @@ namespace sdkMapControlWP8CS
         private Location location = new Location();
         public static double myLatitude;
         public static double myLongitude;
+        Canvas elGlobo;
         const int MIN_ZOOM_LEVEL = 1;
         const int MAX_ZOOM_LEVEL = 20;
         const int MIN_ZOOMLEVEL_FOR_LANDMARKS = 14;
@@ -73,35 +75,67 @@ namespace sdkMapControlWP8CS
                     var layer = new MapLayer();
                     foreach (var lugar in lugares)
                     {
+                        Canvas myCanvas = new Canvas();
                         Image image = new Image();
                         //ruta de la imagen
-                        image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin.png", UriKind.RelativeOrAbsolute));
+                        image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
 
                         //Propiedades de la imagen
                         image.Opacity = 0.8;
                         image.Stretch = System.Windows.Media.Stretch.None;
                         //agregar el click
-                        image.Tap += cambiarImagen;
+                       // image.Tap += cambiarImagen;
+
+
+                        myCanvas.Children.Add(image);
+
+                        TextBox titulo = new TextBox();
+                        titulo.FontSize = 42;
+                        //TextBlock1.Foreground = new System.Windows.Media.SolidColorBrush(Colors.Black);
+                        titulo.Text = lugar.Id.ToString();
+                        Canvas.SetTop(titulo, 100);
+                        Canvas.SetLeft(titulo, 10);
                         
+                        myCanvas.Children.Add(titulo);
 
                         // Create a MapOverlay and add marker.
                         MapOverlay overlay = new MapOverlay();
-                        overlay.Content = image;
+                        overlay.Content = myCanvas;
                         overlay.GeoCoordinate = new GeoCoordinate(lugar.Latitude,lugar.Longitude);
+                        overlay.PositionOrigin = new Point(0.0, 0.0);
+                        layer.Add(overlay);
+                         
+                        /*
+                        MapOverlay overlay = new MapOverlay();
+                        overlay.Content = globo_8;
+                        globo_8.Visibility = Visibility.Visible;
+                        overlay.GeoCoordinate = new GeoCoordinate(lugar.Latitude, lugar.Longitude);
                         overlay.PositionOrigin = new Point(0.5, 1.0);
                         layer.Add(overlay);
+                         * */
                     }
                     sampleMap.Layers.Add(layer);
 
                 };
         }
 
-        private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
+       // private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
+        //{
+        //    //Crear Globo
+         //   Image fondo = new Image();
+         //   fondo = (Image)sender;
+         //   fondo.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin", UriKind.RelativeOrAbsolute));
+        //    Canvas.SetTop(fondo, 100);
+        //    Canvas.SetLeft(fondo, 10);
+        //    elGlobo.Children.Add(fondo);
+        //   Image imagen = ((Canvas)sender).Children.
+        //        imagen.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
+        //        imagen.Tap += cambiaDenuevo;
+        //}
+
+        private void cambiaDenuevo(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            Image imagen = (Image)sender;
-
-                imagen.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pinOpen.png", UriKind.RelativeOrAbsolute));
-
+            NavigationService.Navigate(new Uri("/SoundBoard.xaml", UriKind.RelativeOrAbsolute));
         }
 
 
