@@ -80,7 +80,7 @@ namespace sdkMapControlWP8CS
                     {
                         Canvas myCanvas = new Canvas();
 
-                        if (globito == true)
+                      /*  if (globito == true)
                         {
 
 
@@ -88,6 +88,7 @@ namespace sdkMapControlWP8CS
                             image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
                             image.Opacity = 0.8;
                             image.Stretch = System.Windows.Media.Stretch.None;
+                            
                             
 
 
@@ -106,22 +107,23 @@ namespace sdkMapControlWP8CS
                             image2.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin.png", UriKind.RelativeOrAbsolute));
                             image2.Opacity = 0.8;
                             image2.Stretch = System.Windows.Media.Stretch.None;
-                            Canvas.SetTop(image2, 40);
-                            Canvas.SetLeft(image2, 30);
+                            Canvas.SetTop(image2, 80);
+                            Canvas.SetLeft(image2, 40);
 
                             myCanvas.Children.Add(image2);
                         }
 
                         else
-                        {
+                        {*/
                             Image image = new Image();
                             image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin.png", UriKind.RelativeOrAbsolute));
                             image.Opacity = 0.8;
                             image.Stretch = System.Windows.Media.Stretch.None;
-
+                            Canvas.SetTop(image, -75);
+                            Canvas.SetLeft(image, -20);
 
                             myCanvas.Children.Add(image);
-                        }
+                       // }
 
                         myCanvas.Tap += cambiarImagen;
 
@@ -130,7 +132,7 @@ namespace sdkMapControlWP8CS
                         MapOverlay overlay = new MapOverlay();
                         overlay.Content = myCanvas;
                         overlay.GeoCoordinate = new GeoCoordinate(lugar.Latitude,lugar.Longitude);
-                        overlay.PositionOrigin = new Point(0.0, 0.0);
+                        overlay.PositionOrigin = new Point(0.5, 1.0);
                         layer.Add(overlay);
 
                          
@@ -150,11 +152,12 @@ namespace sdkMapControlWP8CS
 
         private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (globito == true)
+            /*if (globito == true)
                 globito = false;
             else globito = true;
             sampleMap.Layers.Clear();
-            obtenerLugares();
+            obtenerLugares();*/
+            new NotImplementedException();
         //    //Crear Globo
          //   Image fondo = new Image();
          //   fondo = (Image)sender;
