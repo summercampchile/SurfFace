@@ -45,6 +45,8 @@ namespace sdkMapControlWP8CS
         const int MIN_ZOOM_LEVEL = 1;
         const int MAX_ZOOM_LEVEL = 20;
         const int MIN_ZOOMLEVEL_FOR_LANDMARKS = 14;
+        bool globito = true;
+
 
         ToggleStatus locationToggleStatus = ToggleStatus.ToggledOff;
         //ToggleStatus landmarksToggleStatus = ToggleStatus.ToggledOff;
@@ -76,30 +78,53 @@ namespace sdkMapControlWP8CS
                     foreach (var lugar in lugares)
                     {
                         Canvas myCanvas = new Canvas();
-                        Image image = new Image();
-                        //ruta de la imagen
-                        image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
 
-                        //Propiedades de la imagen
-                        image.Opacity = 0.8;
-                        image.Stretch = System.Windows.Media.Stretch.None;
-                        //agregar el click
-                        //image.Tap += cambiarImagen;
+                        if (globito == true)
+                        {
 
-                        
-                        myCanvas.Children.Add(image);
 
-                        TextBox titulo = new TextBox();
-                        titulo.FontSize = 12;
-                        //TextBlock1.Foreground = new System.Windows.Media.SolidColorBrush(Colors.Black);
-                        titulo.Text = "HearMe";
-                        Canvas.SetTop(titulo, 20);
-                        Canvas.SetLeft(titulo, 10);
-                        
-                        myCanvas.Children.Add(titulo);
-                        
+                            Image image = new Image();
+                            image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
+                            image.Opacity = 0.8;
+                            image.Stretch = System.Windows.Media.Stretch.None;
+                            
 
-                        
+
+                            myCanvas.Children.Add(image);
+
+                            TextBox titulo = new TextBox();
+                            titulo.FontSize = 24;
+                            //TextBlock1.Foreground = new System.Windows.Media.SolidColorBrush(Colors.Black);
+                            titulo.Text = "HearMe";
+                            Canvas.SetTop(titulo, 20);
+                            Canvas.SetLeft(titulo, 30);
+
+                            myCanvas.Children.Add(titulo);
+
+                            Image image2 = new Image();
+                            image2.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin.png", UriKind.RelativeOrAbsolute));
+                            image2.Opacity = 0.8;
+                            image2.Stretch = System.Windows.Media.Stretch.None;
+                            Canvas.SetTop(image2, 40);
+                            Canvas.SetLeft(image2, 30);
+
+                            myCanvas.Children.Add(image2);
+                        }
+
+                        else
+                        {
+                            Image image = new Image();
+                            image.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/pin.png", UriKind.RelativeOrAbsolute));
+                            image.Opacity = 0.8;
+                            image.Stretch = System.Windows.Media.Stretch.None;
+
+
+                            myCanvas.Children.Add(image);
+                        }
+
+                        myCanvas.Tap += cambiarImagen;
+
+                        locationToSoundData(lugar);
                         // Create a MapOverlay and add marker.
                         MapOverlay overlay = new MapOverlay();
                         overlay.Content = myCanvas;
@@ -122,8 +147,13 @@ namespace sdkMapControlWP8CS
                 };
         }
 
-        //private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
-      //  {
+        private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (globito == true)
+                globito = false;
+            else globito = true;
+            sampleMap.Layers.Clear();
+            obtenerLugares();
         //    //Crear Globo
          //   Image fondo = new Image();
          //   fondo = (Image)sender;
@@ -135,7 +165,7 @@ namespace sdkMapControlWP8CS
         //        imagen.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
         //        imagen.Tap += cambiaDenuevo;
 
-       // }
+       }
 
         private void cambiaDenuevo(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -337,6 +367,26 @@ namespace sdkMapControlWP8CS
             appBarMenuItem.Click += ZoomOut;
             ApplicationBar.MenuItems.Add(appBarMenuItem);
         }
+
+
+        private void locationToSoundData(Location location)
+        {
+            var soundData = new SoundData();
+
+            soundData.Title = location.Text;
+            soundData.Description = location.description;
+            soundData.Latitude = location.Latitude;
+            soundData.Longitude = location.Longitude;
+            soundData.ResourceName = location.ResourceName;
+            soundData.ContainerName = location.ContainerName;
+            soundData.SasQueryString = location.SasQueryString;
+            soundData.ImageUri = location.ImageUri;
+
+
+            App.ViewModel.CustomSounds.Items.Add(soundData);
+
+        }
+
 
         private enum ToggleStatus
         {

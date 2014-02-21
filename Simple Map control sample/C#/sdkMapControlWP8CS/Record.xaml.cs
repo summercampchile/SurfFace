@@ -48,9 +48,9 @@ namespace sdkMapControlWP8CS
         public double Longitude { get; set; }
 
         [JsonProperty(PropertyName = "description")]
-        public string description { get; set; } 
+        public string description { get; set; }
 
-        /*[JsonProperty(PropertyName = "containerName")]
+        [JsonProperty(PropertyName = "containerName")]
         public string ContainerName { get; set; }
 
         [JsonProperty(PropertyName = "resourceName")]
@@ -58,8 +58,11 @@ namespace sdkMapControlWP8CS
 
         [JsonProperty(PropertyName = "sasQueryString")]
         public string SasQueryString { get; set; }
+          
+        [JsonProperty(PropertyName = "imageUri")]
+        public string ImageUri { get; set; } 
 
-        [JsonProperty(PropertyName = "Audio")]
+        /*[JsonProperty(PropertyName = "Audio")]
         public string Audio { get; set; }*/
     }
 
@@ -86,6 +89,12 @@ namespace sdkMapControlWP8CS
         private string audioName;
         private Geoposition myGeoposition;
 
+        // Using the CameraCaptureTask to allow the user to capture a todo item image //
+        CameraCaptureTask cameraCaptureTask;
+
+        // Using a stream reference to upload the image to blob storage.
+        Stream imageStream = null;
+
         public Record()
         {
 
@@ -95,6 +104,20 @@ namespace sdkMapControlWP8CS
 
             Loaded += MainPage_Loaded;
 
+            cameraCaptureTask = new CameraCaptureTask();
+
+            cameraCaptureTask.Completed += cameraCaptureTask_Completed;
+
+        }
+
+        void cameraCaptureTask_Completed(object sender, PhotoResult e)
+        {
+            imageStream = e.ChosenPhoto;
+        }
+
+        private void ButtonCaptureImage_Click(object sender, RoutedEventArgs e)
+        {
+            cameraCaptureTask.Show();
         }
 
         private async void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -155,19 +178,136 @@ namespace sdkMapControlWP8CS
 
 
         // listener de boton guardar, no implementado
-      
-        private void LocationSave(object sender, RoutedEventArgs e)
+
+        private async void LocationSave(object sender, RoutedEventArgs e)
         {
             Location location = new Location();
             location.Latitude = myGeoposition.Coordinate.Latitude;
             location.Longitude = myGeoposition.Coordinate.Longitude;
             location.Text = Name.Text;
-            location.description = "descripcion";
+            location.description = Description.Text;
 
-            PrompToSubmit(location);
+            // Send the item to be inserted. When blob properties are set this
+            // generates an SAS in the response.
+            string errorString = string.Empty;
+
+            if (imageStream != null)
+            {
+                // Set blob properties of TodoItem.
+                location.ContainerName = "locationImages";
+                location.ResourceName = Guid.NewGuid().ToString() + ".jpg";
+            }
+
+            Debug.WriteLine("SASQUERY: " + location.SasQueryString);
+            Debug.WriteLine("promt Promt");
+            //PrompToSubmit(location);
+            await LocationTable.InsertAsync(location);
+            Debug.WriteLine("SASQUERY: " + location.SasQueryString);
+            Debug.WriteLine("promt succes");
+
+            Debug.WriteLine("0");
+            try
+            {
+                Debug.WriteLine("0.1");
+                Debug.WriteLine("SASQUERY: " + location.SasQueryString);
+
+                var temp = location.SasQueryString;
+
+                // If we have a returned SAS, then upload the blob.
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    // Get the URI generated that contains the SAS 
+                    // and extract the storage credentials.
+                    Debug.WriteLine("1");
+                    StorageCredentials cred = new StorageCredentials(location.SasQueryString);
+                    var imageUri = new Uri(location.ImageUri);
+
+                    Debug.WriteLine("2");
+                    // Instantiate a Blob store container based on the info in the returned item.
+                    CloudBlobContainer container = new CloudBlobContainer(
+                        new Uri(string.Format("https://{0}/{1}",
+                            imageUri.Host, location.ContainerName)), cred);
+                    Debug.WriteLine("3");
+                    // Upload the new image as a BLOB from the stream.
+                    CloudBlockBlob blobFromSASCredential =
+                        container.GetBlockBlobReference(location.ResourceName);
+                    await blobFromSASCredential.UploadFromStreamAsync(imageStream);
+                    Debug.WriteLine("4");
+                    // When you request an SAS at the container-level instead of the blob-level,
+                    // you are able to upload multiple streams using the same container credentials.
+
+                    imageStream = null;
+                    Debug.WriteLine("5");
+                }
+                else
+                {
+                    Debug.WriteLine("no se pudo");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("error: " + ex.Message);
+            }
+
 
             NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.RelativeOrAbsolute));
         }
+
+
+        private async void InsertFoto(Location location)
+        {
+            string errorString = string.Empty;
+
+            if (imageStream != null)
+            {
+                // Set blob properties of TodoItem.
+                location.ContainerName = "locationImages";
+                location.ResourceName = Guid.NewGuid().ToString() + ".jpg";
+            }
+
+            Debug.WriteLine("promt Promt");
+            PrompToSubmit(location);
+            Debug.WriteLine("promt succes");
+
+            Debug.WriteLine("0");
+            try
+            {
+                Debug.WriteLine("0.1");
+                // If we have a returned SAS, then upload the blob.
+                if (!string.IsNullOrEmpty(location.SasQueryString))
+                {
+                    // Get the URI generated that contains the SAS 
+                    // and extract the storage credentials.
+                    Debug.WriteLine("1");
+                    StorageCredentials cred = new StorageCredentials(location.SasQueryString);
+                    var imageUri = new Uri(location.ImageUri);
+
+                    Debug.WriteLine("2");
+                    // Instantiate a Blob store container based on the info in the returned item.
+                    CloudBlobContainer container = new CloudBlobContainer(
+                        new Uri(string.Format("https://{0}/{1}",
+                            imageUri.Host, location.ContainerName)), cred);
+                    Debug.WriteLine("3");
+                    // Upload the new image as a BLOB from the stream.
+                    CloudBlockBlob blobFromSASCredential =
+                        container.GetBlockBlobReference(location.ResourceName);
+                    await blobFromSASCredential.UploadFromStreamAsync(imageStream);
+                    Debug.WriteLine("4");
+                    // When you request an SAS at the container-level instead of the blob-level,
+                    // you are able to upload multiple streams using the same container credentials.
+
+                    imageStream = null;
+                    Debug.WriteLine("5");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("error: " + ex.Message);
+            }
+        }
+
+
+
 
         private void FileNameCompleted(object sender, PopUpEventArgs<string, PopUpResult> e)
         {

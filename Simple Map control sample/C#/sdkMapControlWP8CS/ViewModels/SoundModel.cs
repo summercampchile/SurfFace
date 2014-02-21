@@ -12,20 +12,22 @@ namespace sdkMapControlWP8CS.ViewModels
     public class SoundModel
     {
         public SoundGroup CustomSounds { get; set; }
-        public SoundGroup Animals { get; set; }
+
+
+        /*public SoundGroup Animals { get; set; }
         public SoundGroup Cartoons { get; set; }
         public SoundGroup Taunts { get; set; }
-        public SoundGroup Warnings { get; set; }
+        public SoundGroup Warnings { get; set; }*/
 
         public bool IsDataLoaded { get; set; }
 
         public const string CustomSoundKey = "CustomSound";
         public void LoadData()
         {
-            Animals = CreateAnimalsGroup();
-            Cartoons = CreateCartoonsGroup();
-            Taunts = CreateTauntsGroup();
-            Warnings = CreateWarningsGroup();
+            //Animals = CreateAnimalsGroup();
+            //Cartoons = CreateCartoonsGroup();
+            //Taunts = CreateTauntsGroup();
+            //Warnings = CreateWarningsGroup();
 
             CustomSounds = LoadCustomSounds();
 
@@ -34,21 +36,21 @@ namespace sdkMapControlWP8CS.ViewModels
 
         private SoundGroup LoadCustomSounds()
         {
-        	SoundGroup data;
+            SoundGroup data;
             string dataFromAppSettings;
 
             if (IsolatedStorageSettings.ApplicationSettings.TryGetValue(CustomSoundKey, out dataFromAppSettings))
             {
                 data = JsonConvert.DeserializeObject<SoundGroup>(dataFromAppSettings);
             }
-            else 
+            else
             {
                 data = new SoundGroup();
-                data.Title = "mine";
+                data.Title = "uploads";
             }
+            data.Title = "MyUploads";
             return data;
         }
-
         private SoundGroup CreateAnimalsGroup()
         {
             SoundGroup data = new SoundGroup();

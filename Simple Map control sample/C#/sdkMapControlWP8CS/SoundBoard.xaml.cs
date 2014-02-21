@@ -31,21 +31,21 @@ namespace sdkMapControlWP8CS
 
             ApplicationBarIconButton recordAudioAppBar =
                 new ApplicationBarIconButton();
-                recordAudioAppBar.IconUri=
-                    new Uri("/Assets/AppBar/microphone.png", UriKind.Relative);
+            recordAudioAppBar.IconUri =
+                new Uri("/Assets/AppBar/microphone.png", UriKind.Relative);
 
             recordAudioAppBar.Text = AppResources.AppBarRecord;
 
             recordAudioAppBar.Click += RecordAudioClick;
 
-            ApplicationBarMenuItem aboutAppBar   = new ApplicationBarMenuItem();
+            ApplicationBarMenuItem aboutAppBar = new ApplicationBarMenuItem();
             aboutAppBar.Text = AppResources.AppBarAbout;
 
             aboutAppBar.Click += AboutClick;
 
             ApplicationBar.Buttons.Add(recordAudioAppBar);
             ApplicationBar.MenuItems.Add(aboutAppBar);
-            
+
         }
 
         private void AboutClick(object sender, EventArgs e)
@@ -78,7 +78,7 @@ namespace sdkMapControlWP8CS
             if (data == null)
                 return;
 
-            if(File.Exists(data.FilePath))
+            if (File.Exists(data.FilePath))
             {
                 AudioPlayer.Source = new Uri(data.FilePath, UriKind.RelativeOrAbsolute);
             }
@@ -86,7 +86,7 @@ namespace sdkMapControlWP8CS
             {
                 using (var storageFolder = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    using ( var stream = new IsolatedStorageFileStream(data.FilePath, FileMode.Open, FileAccess.Read, storageFolder))
+                    using (var stream = new IsolatedStorageFileStream(data.FilePath, FileMode.Open, FileAccess.Read, storageFolder))
                     {
                         AudioPlayer.SetSource(stream);
                     }
