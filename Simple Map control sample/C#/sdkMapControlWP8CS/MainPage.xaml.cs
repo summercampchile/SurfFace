@@ -41,7 +41,7 @@ namespace sdkMapControlWP8CS
         private Location location = new Location();
         public static double myLatitude;
         public static double myLongitude;
-        Canvas elGlobo;
+       
         const int MIN_ZOOM_LEVEL = 1;
         const int MAX_ZOOM_LEVEL = 20;
         const int MIN_ZOOMLEVEL_FOR_LANDMARKS = 14;
@@ -84,26 +84,29 @@ namespace sdkMapControlWP8CS
                         image.Opacity = 0.8;
                         image.Stretch = System.Windows.Media.Stretch.None;
                         //agregar el click
-                       // image.Tap += cambiarImagen;
+                        //image.Tap += cambiarImagen;
 
-
+                        
                         myCanvas.Children.Add(image);
 
                         TextBox titulo = new TextBox();
-                        titulo.FontSize = 42;
+                        titulo.FontSize = 12;
                         //TextBlock1.Foreground = new System.Windows.Media.SolidColorBrush(Colors.Black);
-                        titulo.Text = lugar.Id.ToString();
-                        Canvas.SetTop(titulo, 100);
+                        titulo.Text = "HearMe";
+                        Canvas.SetTop(titulo, 20);
                         Canvas.SetLeft(titulo, 10);
                         
                         myCanvas.Children.Add(titulo);
+                        
 
+                        
                         // Create a MapOverlay and add marker.
                         MapOverlay overlay = new MapOverlay();
                         overlay.Content = myCanvas;
                         overlay.GeoCoordinate = new GeoCoordinate(lugar.Latitude,lugar.Longitude);
                         overlay.PositionOrigin = new Point(0.0, 0.0);
                         layer.Add(overlay);
+
                          
                         /*
                         MapOverlay overlay = new MapOverlay();
@@ -119,8 +122,8 @@ namespace sdkMapControlWP8CS
                 };
         }
 
-       // private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
-        //{
+        //private void cambiarImagen(object sender, System.Windows.Input.GestureEventArgs e)
+      //  {
         //    //Crear Globo
          //   Image fondo = new Image();
          //   fondo = (Image)sender;
@@ -131,7 +134,8 @@ namespace sdkMapControlWP8CS
         //   Image imagen = ((Canvas)sender).Children.
         //        imagen.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri("Assets/globoFondo.png", UriKind.RelativeOrAbsolute));
         //        imagen.Tap += cambiaDenuevo;
-        //}
+
+       // }
 
         private void cambiaDenuevo(object sender, System.Windows.Input.GestureEventArgs e)
         {
